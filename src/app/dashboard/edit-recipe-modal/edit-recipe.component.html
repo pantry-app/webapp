@@ -1,29 +1,39 @@
 <h2 mat-dialog-title>Edit Recipe</h2>
 <mat-dialog-content>
-  <p>
-    <mat-form-field class="full-width">
-      <input matInput maxlength="64" placeholder="Name" />
-    </mat-form-field>
-  </p>
+  <form [formGroup]="form">
+    <p>
+      <mat-form-field class="full-width">
+        <input matInput
+               formControlName="name"
+               maxlength="64"
+               placeholder="Name" />
+      </mat-form-field>
+    </p>
 
-  <p>
-    <mat-form-field class="full-width">
-      <input matInput
-             type="url"
-             maxlength="256"
-             placeholder="URL" />
-    </mat-form-field>
-  </p>
+    <p>
+      <mat-form-field class="full-width">
+        <input matInput
+               formControlName="url"
+               type="url"
+               maxlength="256"
+               placeholder="URL" />
+      </mat-form-field>
+    </p>
 
-  <p>
-    <mat-form-field class="full-width">
-      <textarea matInput placeholder="Notes"></textarea>
-    </mat-form-field>
-  </p>
+    <p>
+      <mat-form-field class="full-width">
+        <textarea matInput
+                  formControlName="notes"
+                  placeholder="Notes"></textarea>
+      </mat-form-field>
+    </p>
 
-  <p>
-    <mat-checkbox>Active</mat-checkbox>
-  </p>
+    <p>
+      <mat-checkbox formControlName="active">
+        Active
+      </mat-checkbox>
+    </p>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button

@@ -14,14 +14,25 @@ import { HistoryComponent } from './history/history.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { EditRecipeComponent } from './edit-recipe-modal/edit-recipe.component';
 import { EditIngredientComponent } from './edit-ingredient-modal/edit-ingredient.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  declarations: [ShoppingListComponent, StatsComponent, MainComponent, SettingsComponent, HistoryComponent, RecipeComponent, EditRecipeComponent, EditIngredientComponent],
+  declarations: [
+    ShoppingListComponent,
+    StatsComponent,
+    MainComponent,
+    SettingsComponent,
+    HistoryComponent,
+    RecipeComponent,
+    EditRecipeComponent,
+    EditIngredientComponent,
+  ],
   entryComponents: [EditRecipeComponent, EditIngredientComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
+    SharedModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

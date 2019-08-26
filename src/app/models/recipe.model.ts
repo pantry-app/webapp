@@ -8,6 +8,8 @@ export interface Ingredient {
   id: string;
   name: string;
   status: IngredientStatusEnum;
+  notes: string;
+  active: boolean;
 }
 
 export interface Recipe {

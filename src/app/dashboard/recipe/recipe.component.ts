@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EditRecipeComponent } from '../edit-recipe-modal/edit-recipe.component';
 import { EditIngredientComponent } from '../edit-ingredient-modal/edit-ingredient.component';
+import { Recipe } from '../../models';
 
 @Component({
   selector: 'app-recipe',
@@ -10,13 +11,18 @@ import { EditIngredientComponent } from '../edit-ingredient-modal/edit-ingredien
 })
 export class RecipeComponent implements OnInit {
 
+  @Input()
+  public recipe: Recipe = null;
+
   constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
   handleEdit() {
-    this.dialog.open(EditRecipeComponent);
+    this.dialog.open(EditRecipeComponent, {
+      data: this.recipe
+    });
   }
 
   handleAddIngredient() {

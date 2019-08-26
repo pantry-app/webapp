@@ -1,31 +1,52 @@
-<div class="row search-panel" fxLayout="row" fxLayoutAlign="center center">
-  <mat-accordion class="headers-align">
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Search
-        </mat-panel-title>
-        <mat-panel-description>
-          <span></span>
-          <mat-icon>edit</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+<div *ngIf="recipes$ | async; let recipes; else loader">
+  <div class="row search-panel"
+       fxLayout="row"
+       fxLayoutAlign="center center">
+    <mat-accordion class="headers-align">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Search
+          </mat-panel-title>
+          <mat-panel-description>
+            <span></span>
+            <mat-icon>edit</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-      <mat-form-field>
-        <input matInput placeholder="Recipe name">
-      </mat-form-field>
-    </mat-expansion-panel>
-  </mat-accordion>
+        <mat-form-field>
+          <input matInput placeholder="Recipe name">
+        </mat-form-field>
+
+        <p>
+          <mat-checkbox>Active</mat-checkbox>
+        </p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div *ngIf="recipes.length === 0"
+        fxLayout="row" fxLayoutAlign="center">
+    <mat-card>
+      No recipes.
+    </mat-card>
+  </div>
+
+  <div class="row" fxLayout="row" fxLayoutAlign="center">
+    <div class="col" fxLayout="column">
+      <app-recipe *ngFor="let recipe of recipes | take:'even'"
+                  [recipe]="recipe"></app-recipe>
+    </div>
+    <div class="col" fxLayout="column">
+      <app-recipe *ngFor="let recipe of recipes | take:'odd'"
+                  [recipe]="recipe"></app-recipe>
+    </div>
+  </div>
 </div>
 
-<div class="row" fxLayout="row" fxLayoutAlign="center">
-  <div class="col" fxLayout="column">
-    <app-recipe *ngFor="let _ of [1, 2, 3, 4]"></app-recipe>
-  </div>
-  <div class="col" fxLayout="column">
-    <app-recipe *ngFor="let _ of [1, 2, 3, 4]"></app-recipe>
-  </div>
-</div>
+<ng-template #loader>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
 
 <button mat-fab
         id="create-recipe-fab"
