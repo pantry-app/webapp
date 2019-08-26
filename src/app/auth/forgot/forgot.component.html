@@ -1,0 +1,49 @@
+<div id="forgot-container"
+     fxLayout="column"
+     fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form"
+            (ngSubmit)="submit()">
+
+        <p class="mat-h2">Forgot Password</p>
+
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput
+                   formControlName="email"
+                   placeholder="you@email"
+                   type="email">
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+        </p>
+
+        <div *ngIf="hasSubmitted"
+             fxLayout="row">
+          <mat-icon>warning</mat-icon>
+          <span>
+            You will receive an email with further instructions.
+          </span>
+        </div>
+
+        <p>
+          <button type="submit"
+                  mat-stroked-button
+                  [disabled]="form.invalid">
+            Submit
+          </button>
+        </p>
+      </form>
+
+      <mat-divider></mat-divider>
+
+      <div style="margin-top: 2rem;" fxLayout="row" fxLayoutAlign="space-around center">
+        <a mat-stroked-button
+           [routerLink]="['/', 'auth', 'login']">
+          Login
+        </a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

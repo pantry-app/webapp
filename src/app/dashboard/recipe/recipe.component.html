@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+      <span>
+        Chickpea Curry
+      </span>
+      <button mat-icon-button
+              [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </mat-card-title>
+    <mat-card-subtitle>
+
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-nav-list>
+      <a mat-list-item
+         (click)="handleEditIngredient()">
+        <h4 mat-line>
+          Coconut milk
+        </h4>
+      </a>
+      <a mat-list-item
+         (click)="handleEditIngredient()">
+        <h4 mat-line>
+          Chickpeas
+        </h4>
+      </a>
+      <a mat-list-item
+         (click)="handleEditIngredient()">
+        <h4 mat-line>
+          Sweet potato
+        </h4>
+      </a>
+    </mat-nav-list>
+  </mat-card-content>
+</mat-card>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item
+          (click)="handleEdit()">
+    <mat-icon>edit</mat-icon>
+    <span>
+      Edit
+    </span>
+  </button>
+  <button mat-menu-item
+          (click)="handleAddIngredient()">
+    <mat-icon>add</mat-icon>
+    <span>
+      Add Ingredient
+    </span>
+  </button>
+</mat-menu>

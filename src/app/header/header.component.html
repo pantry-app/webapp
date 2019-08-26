@@ -1,0 +1,30 @@
+<mat-toolbar fxLayout="row"
+             fxLayoutAlign="space-between center"
+             color="primary">
+
+  <button mat-icon-button
+          (click)="toggleSidenav.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <div fxLayout="row">
+    <span style="margin-right: 0.5rem;">
+      Pantry
+    </span>
+    <mat-chip-list>
+      <mat-chip>{{ environment.VERSION }}</mat-chip>
+    </mat-chip-list>
+  </div>
+
+  <a *ngIf="user$ | async"
+     mat-icon-button
+     [routerLink]="['/', 'dashboard']">
+    <mat-icon>home</mat-icon>
+  </a>
+
+  <a *ngIf="!(user$ | async)"
+     mat-icon-button
+     routerLink="/">
+    <mat-icon>home</mat-icon>
+  </a>
+</mat-toolbar>

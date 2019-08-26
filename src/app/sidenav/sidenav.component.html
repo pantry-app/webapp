@@ -1,0 +1,115 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <h2>Menu</h2>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-nav-list>
+
+  <h2 matSubheader>Actions</h2>
+
+  <a mat-list-item routerLink="/" style="height: 0;"></a>
+
+  <a mat-list-item
+     routerLink="/"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>home</mat-icon>
+    <h4 mat-line>
+      Home
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['auth', 'login']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>person</mat-icon>
+    <h4 mat-line>
+      Login
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['auth', 'register']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>person_add</mat-icon>
+    <h4 mat-line>
+      Register
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['dashboard']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>reply</mat-icon>
+    <h4 mat-line>
+      Recipes
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['dashboard', 'shoppinglist']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>play_circle_filled</mat-icon>
+    <h4 mat-line>
+      Shopping
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['dashboard', 'stats']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>history</mat-icon>
+    <h4 mat-line>
+      Stats
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['dashboard', 'history']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>history</mat-icon>
+    <h4 mat-line>
+      History
+    </h4>
+  </a>
+
+  <a mat-list-item
+     [routerLink]="['dashboard', 'settings']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>settings</mat-icon>
+    <h4 mat-line>
+      Settings
+    </h4>
+  </a>
+
+  <a mat-list-item
+     routerLink="/"
+     (click)="logout()">
+    <mat-icon matListIcon>reply</mat-icon>
+    <h4 mat-line>
+      Logout
+    </h4>
+  </a>
+
+  <mat-divider></mat-divider>
+
+  <a mat-list-item
+     [routerLink]="['/', 'about']"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>info</mat-icon>
+    <h4 mat-line>
+      About
+    </h4>
+  </a>
+
+  <a mat-list-item
+     target="_blank"
+     href="https://github.com/pantry"
+     (click)="toggleSidenav.emit()">
+    <mat-icon matListIcon>cake</mat-icon>
+    <h4 mat-line>
+      Github
+    </h4>
+  </a>
+
+</mat-nav-list>

@@ -1,0 +1,20 @@
+.search-panel {
+  margin-top: 0.5rem;
+}
+
+#create-recipe-fab {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.headers-align .mat-expansion-panel-header-title,
+.headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+  align-self: center;
+}
+
+.headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}

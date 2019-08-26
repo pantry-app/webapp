@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~ngx-toastr/toastr';
+
+
+html, body {
+  min-height: 100vh;
+}
+
+app-root {
+  min-height: 100vh;
+}
+
+.toast-top-center {
+  top: 12px;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-card {
+  margin: 1rem;
+}
+
+mat-sidenav-content {
+  min-height: 100vh;
+}
+
+mat-dialog-container {
+  min-width: 20rem;
+}

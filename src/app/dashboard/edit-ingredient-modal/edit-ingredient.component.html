@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Edit Ingredient</h2>
+<mat-dialog-content>
+  <p>
+    <mat-form-field class="full-width">
+      <input matInput maxlength="64" placeholder="Name" />
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field class="full-width">
+      <textarea matInput placeholder="Notes"></textarea>
+    </mat-form-field>
+  </p>
+
+  <mat-button-toggle-group>
+    <mat-button-toggle value="empty">
+      <mat-icon>trending_down</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="low">
+      <mat-icon>trending_flat</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="full">
+      <mat-icon>trending_up</mat-icon>
+    </mat-button-toggle>
+
+  </mat-button-toggle-group>
+
+  <p>
+    <mat-checkbox>Active</mat-checkbox>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button
+          mat-dialog-close>
+    Cancel
+  </button>
+  <button mat-button
+          [mat-dialog-close]="true">
+    Save
+  </button>
+</mat-dialog-actions>
