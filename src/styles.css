@@ -33,3 +33,7 @@ mat-sidenav-content {
 mat-dialog-container {
   min-width: 20rem;
 }
+
+.mat-card-header-text {
+  width: 100%;
+}

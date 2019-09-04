@@ -26,12 +26,12 @@ export class ForgotComponent implements OnInit {
   }
 
   public submit(): void {
-    this.authService
-      .forgot(this.form.value.email)
-      .subscribe(
-        () => {
-          this.hasSubmitted = true;
-        }
-      );
+    // this.authService
+    //   .forgot(this.form.value.email)
+    //   .subscribe(
+    //     () => {
+    //       this.hasSubmitted = true;
+    //     }
+    //   );
   }
 }

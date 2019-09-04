@@ -18,17 +18,17 @@ export class VerifyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService
-      .verifyAccount(this.route.snapshot.paramMap.get('token'))
-      .subscribe(
-        () => {
-          this.isLoading = false;
-          this.router.navigate(['/', 'dashboard']);
-        },
-        () => {
-          this.isLoading = false;
-          this.hasError = true;
-        }
-      );
+    // this.authService
+    //   .verifyAccount(this.route.snapshot.paramMap.get('token'))
+    //   .subscribe(
+    //     () => {
+    //       this.isLoading = false;
+    //       this.router.navigate(['/', 'dashboard']);
+    //     },
+    //     () => {
+    //       this.isLoading = false;
+    //       this.hasError = true;
+    //     }
+    //   );
   }
 }

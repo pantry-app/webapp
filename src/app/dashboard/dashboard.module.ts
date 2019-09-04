@@ -15,6 +15,8 @@ import { RecipeComponent } from './recipe/recipe.component';
 import { EditRecipeComponent } from './edit-recipe-modal/edit-recipe.component';
 import { EditIngredientComponent } from './edit-ingredient-modal/edit-ingredient.component';
 import { SharedModule } from '../shared/shared.module';
+import { CreateRecipeComponent } from './create-recipe-modal/create-recipe.component';
+import { CreateIngredientComponent } from './create-ingredient-modal/create-ingredient.component';
 
 
 @NgModule({
@@ -27,8 +29,15 @@ import { SharedModule } from '../shared/shared.module';
     RecipeComponent,
     EditRecipeComponent,
     EditIngredientComponent,
+    CreateRecipeComponent,
+    CreateIngredientComponent,
   ],
-  entryComponents: [EditRecipeComponent, EditIngredientComponent],
+  entryComponents: [
+    EditRecipeComponent,
+    EditIngredientComponent,
+    CreateRecipeComponent,
+    CreateIngredientComponent
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,

@@ -1,10 +1,11 @@
-<h2 mat-dialog-title>Edit Recipe</h2>
+<h2 mat-dialog-title>Add Recipe</h2>
 <mat-dialog-content>
   <form [formGroup]="form">
     <p>
       <mat-form-field class="full-width">
         <input matInput
                formControlName="name"
+               class="recipe-name"
                maxlength="64"
                placeholder="Name" />
       </mat-form-field>
@@ -37,10 +38,12 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button
-          mat-dialog-close>
+          mat-dialog-close
+          type="button">
     Cancel
   </button>
   <button mat-button
+          type="submit"
           (click)="submit()">
     Save
   </button>

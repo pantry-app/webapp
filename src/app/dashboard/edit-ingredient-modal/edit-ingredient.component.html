@@ -1,33 +1,50 @@
-<h2 mat-dialog-title>Edit Ingredient</h2>
+<div fxLayout="row" fxLayoutAlign="space-between center">
+  <h2 mat-dialog-title>
+    Edit Ingredient
+  </h2>
+  <button mat-icon-button
+          class="menu"
+          [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
 <mat-dialog-content>
-  <p>
-    <mat-form-field class="full-width">
-      <input matInput maxlength="64" placeholder="Name" />
-    </mat-form-field>
-  </p>
+  <form [formGroup]="form">
+    <p>
+      <mat-form-field class="full-width">
+        <input matInput
+               formControlName="name"
+               maxlength="64"
+               placeholder="Name" />
+      </mat-form-field>
+    </p>
 
-  <p>
-    <mat-form-field class="full-width">
-      <textarea matInput placeholder="Notes"></textarea>
-    </mat-form-field>
-  </p>
+    <p>
+      <mat-form-field class="full-width">
+        <textarea matInput
+                  formControlName="notes"
+                  placeholder="Notes"></textarea>
+      </mat-form-field>
+    </p>
 
-  <mat-button-toggle-group>
-    <mat-button-toggle value="empty">
-      <mat-icon>trending_down</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle value="low">
-      <mat-icon>trending_flat</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle value="full">
-      <mat-icon>trending_up</mat-icon>
-    </mat-button-toggle>
+    <p>
+      <mat-form-field class="full-width">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let status of statusChoices"
+                      [value]="status">
+            {{ status }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
 
-  </mat-button-toggle-group>
-
-  <p>
-    <mat-checkbox>Active</mat-checkbox>
-  </p>
+    <p>
+      <mat-checkbox formControlName="active">
+        Active
+      </mat-checkbox>
+    </p>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button
@@ -35,7 +52,17 @@
     Cancel
   </button>
   <button mat-button
-          [mat-dialog-close]="true">
+          (click)="handleSubmit()">
     Save
   </button>
 </mat-dialog-actions>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item
+          (click)="handleRemove()">
+    <mat-icon>delete</mat-icon>
+    <span>
+      Remove
+    </span>
+  </button>
+</mat-menu>

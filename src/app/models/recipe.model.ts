@@ -4,6 +4,12 @@ export enum IngredientStatusEnum {
   FULL = 'full'
 }
 
+export const IngredientStatusArray: IngredientStatusEnum[] = [
+  IngredientStatusEnum.EMPTY,
+  IngredientStatusEnum.LOW,
+  IngredientStatusEnum.FULL
+];
+
 export interface Ingredient {
   id: string;
   name: string;

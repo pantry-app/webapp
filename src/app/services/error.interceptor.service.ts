@@ -25,17 +25,27 @@ export class ErrorInterceptorService implements HttpInterceptor {
               // do error handling here
               let message = 'Unknown Error!';
 
-              if (resp.error && resp.error.message) {
-                // Backend 400-level error
-                message = resp.error.message;
+              if (resp.error) {
+                if (resp.error.message) {
+                  message = resp.error.message;
+                } else if (resp.error.detail) {
+                  message = resp.error.detail;
+                } else {
+                  const messages: string[] = [];
+
+                  Object.values(resp.error).forEach(
+                    (msgs: string[]) => messages.push(...msgs)
+                  );
+
+                  message = messages.join('; ');
+                }
               } else if (resp.statusText) {
                 // Other kind of error (500, API offline, etc.)
                 message = resp.statusText;
               }
 
               // Hack to prevent semantic error messages from showing a popup error
-              const whitelist = [
-              ];
+              const whitelist = [];
 
               if (whitelist.includes(message)) {
                 return;

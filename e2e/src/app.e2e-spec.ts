@@ -1,23 +1,205 @@
-import { AppPage } from './app.po';
+import { AppHome, AppHeader, AppSideNav, AppRegister, AppLogin, AppState, AppRecipePage, AppShortcuts } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
-  let page: AppPage;
-
-  beforeEach(() => {
-    page = new AppPage();
+describe('App Header', () => {
+  beforeEach(async () => {
+    await AppHome.navigateTo();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('webapp app is running!');
+  it('should display the app name', () => {
+    expect(AppHeader.getAppName()).toEqual('Pantry');
+  });
+
+  it('opens the sidenav', async () => {
+    await AppHeader.sidenav.open();
+
+    expect(AppSideNav.isOpen()).toBeTruthy();
   });
 
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser
     const logs = await browser.manage().logs().get(logging.Type.BROWSER);
+
     expect(logs).not.toContain(jasmine.objectContaining({
       level: logging.Level.SEVERE,
     } as logging.Entry));
   });
+});
+
+describe('Authentication', () => {
+  // Register, Login, Logout
+
+  beforeEach(async () => {
+
+  });
+
+  it('should register an account, then logout, then login', async () => {
+    const email = 'test@example.com';
+    const password = 'supersecurepassword123';
+
+    // Perform registration
+    await AppRegister.navigateTo();
+
+    await AppRegister.form.values(email, password);
+
+    await AppRegister.form.submit();
+
+    // Confirm logged in by checking URL
+    expect(AppState.currentUrl()).toContain('/dashboard/');
+
+    // Perform logout
+    await AppHeader.sidenav.open();
+
+    await AppSideNav.click('Logout');
+
+    // Confirm logged out by checking URL
+    await expect(AppState.currentUrl()).not.toContain('/dashboard/');
+
+    // Perform login
+    await AppLogin.navigateTo();
+
+    await AppLogin.form.values(email, password);
+
+    await AppLogin.form.submit();
+
+    // Confirm logged in by checking URL
+    await expect(AppState.currentUrl()).toContain('/dashboard/');
+  });
+});
+
+describe('Recipes', () => {
+  // Add, edit, delete recipe
+
+  beforeEach(async () => {
+
+  });
+
+  it('should create, then edit, then delete a recipe', async () => {
+    // Login to the app
+    await AppShortcuts.login();
+
+    // Create a recipe
+    const name = 'Vegan Chili';
+    const url = 'https://sweetpeasandsaffron.com/vegan-crockpot-chili-freezer/';
+    const notes = 'Can substitute kidney beans for black beans!';
+
+    await AppRecipePage.create.open();
+
+    await AppRecipePage.create.form.values(name, url, notes);
+    await AppRecipePage.create.form.submit();
+
+    // Confirm created
+    expect(AppRecipePage.recipes.get(name).isPresent()).toBeTruthy();
+
+    // Edit recipe
+    const updatedName = 'Vegan Chili Deluxe';
+
+    await AppRecipePage.edit.open(name);
+
+    await AppRecipePage.edit.form.values(updatedName);
+    await AppRecipePage.edit.form.submit();
+
+    // Confirm edit
+    expect(AppRecipePage.recipes.get(updatedName).isPresent()).toBeTruthy();
+
+    // Delete recipe
+    await AppRecipePage.remove(updatedName);
+
+    // Wait for delete to occur
+    await AppShortcuts.sleep(3000);
+
+    // Refresh
+    await AppShortcuts.refresh();
+
+    // Confirm delete
+    expect(AppRecipePage.recipes.get(updatedName).isPresent()).toBeFalsy();
+  });
+});
+
+describe('Ingredients', () => {
+  // Add, edit, delete ingredient
+
+  beforeEach(async () => {
+
+  });
+
+  it('should create, then edit, then delete an ingredient', async () => {
+    // Login to the app
+    await AppShortcuts.login();
+
+    // Create a recipe
+    const recipeName = 'Vegan Chili';
+
+    await AppRecipePage.create.open();
+
+    await AppRecipePage.create.form.values(recipeName);
+    await AppRecipePage.create.form.submit();
+
+    // Create an ingredient
+    const ingredientName = 'Kidney beans';
+
+    // Open the Add Ingredient dialog
+    await AppRecipePage.ingredients.add(recipeName);
+
+    // Select the Create tab
+    await AppRecipePage.ingredients.create.openTab();
+
+    // Fill in the form
+    await AppRecipePage.ingredients.create.form.values(ingredientName);
+
+    await AppRecipePage.ingredients.create.form.submit();
+
+    // Confirm ingredient added to recipe
+    let ingredients = await AppRecipePage.ingredients.getForRecipe(recipeName);
+
+    await expect(ingredients.length).toEqual(1);
+    await expect(ingredients[0].name).toEqual(ingredientName);
+
+    // Edit the ingredient
+    await AppRecipePage.ingredients.edit.open(recipeName, ingredientName);
+
+    // Change the ingredient name
+    const updatedIngredientName = 'Kidney Beans (12oz)';
+
+    await AppRecipePage.ingredients.edit.form.values(updatedIngredientName);
+
+    await AppRecipePage.ingredients.edit.form.submit();
+
+    ingredients = await AppRecipePage.ingredients.getForRecipe(recipeName);
+
+    await expect(ingredients.length).toEqual(1);
+    await expect(ingredients[0].name).toEqual(updatedIngredientName);
+
+    // Remove the ingredient from the recipe
+    await AppRecipePage.ingredients.edit.open(recipeName, updatedIngredientName);
+
+    await AppRecipePage.ingredients.edit.remove();
+
+    // Confirm removal
+    ingredients = await AppRecipePage.ingredients.getForRecipe(recipeName);
+
+    await expect(ingredients.length).toEqual(0);
+
+    // Delete the recipe to cleanup
+    await AppRecipePage.remove(recipeName);
+
+    // Wait for delete to occur
+    await AppShortcuts.sleep(3000);
+  });
+});
+
+describe('Shopping List', () => {
+  //
+});
+
+describe('History', () => {
+  //
+});
+
+describe('Stats', () => {
+  //
+});
+
+describe('Settings', () => {
+  //
 });

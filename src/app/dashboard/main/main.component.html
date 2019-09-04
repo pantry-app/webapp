@@ -1,4 +1,4 @@
-<div *ngIf="recipes$ | async; let recipes; else loader">
+<div *ngIf="!loading">
   <div class="row search-panel"
        fxLayout="row"
        fxLayoutAlign="center center">
@@ -42,14 +42,16 @@
                   [recipe]="recipe"></app-recipe>
     </div>
   </div>
+
+  <button mat-fab
+          class="create-recipe"
+          id="create-recipe-fab"
+          (click)="handleAddRecipe()">
+    <mat-icon>create</mat-icon>
+  </button>
 </div>
 
-<ng-template #loader>
+<div *ngIf="loading">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-template>
+</div>
 
-<button mat-fab
-        id="create-recipe-fab"
-        (click)="handleAddRecipe()">
-  <mat-icon>create</mat-icon>
-</button>

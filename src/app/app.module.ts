@@ -6,19 +6,22 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from './material/material.module';
 
 import { ErrorInterceptorService } from './services/error.interceptor.service';
+import { AuthInterceptor } from './services/auth-interceptor.service';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+
 import { SharedModule } from './shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +36,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     AppRoutingModule,
     SharedModule,
-    BrowserAnimationsModule,
+    NoopAnimationsModule,
     HttpClientModule,
     FlexLayoutModule,
     MaterialModule,
@@ -45,6 +48,7 @@ import { SharedModule } from './shared/shared.module';
   bootstrap: [AppComponent],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
 })
 export class AppModule { }

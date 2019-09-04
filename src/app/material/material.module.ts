@@ -27,6 +27,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [],
@@ -57,7 +59,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatDialogModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatSnackBarModule
   ],
   exports: [
     MatToolbarModule,
@@ -85,7 +88,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatDialogModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {

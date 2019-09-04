@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +16,7 @@ export class RegisterComponent implements OnInit {
   public hasSubmitted = false;
 
   constructor(private fb: FormBuilder,
+              private router: Router,
               private authService: AuthService) {
   }
 
@@ -27,10 +30,13 @@ export class RegisterComponent implements OnInit {
   public register(): void {
     this.authService
       .register(this.form.value)
+      .pipe(
+        switchMap(
+          () => this.authService.login(this.form.value)
+        )
+      )
       .subscribe(
-        () => {
-          this.hasSubmitted = true;
-        }
+        () => this.router.navigate(['dashboard'])
       );
   }
 }

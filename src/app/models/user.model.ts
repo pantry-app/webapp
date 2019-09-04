@@ -1,3 +1,3 @@
 export interface IUser {
-  readonly jwt: string;
+  readonly auth_token: string;
 }

@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { EditRecipeComponent } from '../edit-recipe-modal/edit-recipe.component';
 import { EditIngredientComponent } from '../edit-ingredient-modal/edit-ingredient.component';
-import { Recipe } from '../../models';
+import { Ingredient, Recipe } from '../../models';
+import { CreateIngredientComponent } from '../create-ingredient-modal/create-ingredient.component';
+import { RecipeService } from '../../services/api/recipe.service';
 
 @Component({
   selector: 'app-recipe',
@@ -14,7 +16,11 @@ export class RecipeComponent implements OnInit {
   @Input()
   public recipe: Recipe = null;
 
-  constructor(private dialog: MatDialog) { }
+  public deleted = false;
+
+  constructor(private dialog: MatDialog,
+              private snackBar: MatSnackBar,
+              private recipeService: RecipeService) { }
 
   ngOnInit() {
   }
@@ -26,11 +32,40 @@ export class RecipeComponent implements OnInit {
   }
 
   handleAddIngredient() {
-    // TODO create ingredient, then edit it
-    this.dialog.open(EditIngredientComponent);
+    this.dialog.open(CreateIngredientComponent, {
+      data: this.recipe
+    });
   }
 
-  handleEditIngredient() {
-    this.dialog.open(EditIngredientComponent);
+  handleEditIngredient(ingredient: Ingredient) {
+    this.dialog.open(EditIngredientComponent, {
+      data: {
+        ingredient,
+        recipe: this.recipe
+      }
+    });
+  }
+
+  handleDelete() {
+    const ref = this.snackBar.open('Recipe deleted', 'Undo', {
+      duration: 1750
+    });
+
+    this.deleted = true;
+
+    ref.afterDismissed().subscribe(
+      () => {
+        // Unfortunately, `afterDismissed` is called even after `onAction`,
+        //  so we check that 'Undo' was not clicked by checking state of `this.deleted`
+        //  before deleting object
+        if (this.deleted) {
+          this.recipeService.delete(this.recipe).subscribe();
+        }
+      }
+    );
+
+    ref.onAction().subscribe(
+      () => this.deleted = false
+    );
   }
 }

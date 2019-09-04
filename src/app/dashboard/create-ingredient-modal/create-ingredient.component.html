@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>Add Ingredient</h2>
+<mat-dialog-content>
+  <mat-tab-group animationDuration="0ms"
+                 [dynamicHeight]="true">
+    <mat-tab label="Select">
+      <form [formGroup]="existingForm"
+            class="full-width">
+        <mat-form-field class="full-width">
+          <input type="text"
+                 placeholder="Ingredient"
+                 matInput
+                 formControlName="ingredient"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </mat-tab>
+    <mat-tab label="Create">
+      <form [formGroup]="createForm">
+        <p>
+          <mat-form-field class="full-width">
+            <input matInput
+                   formControlName="name"
+                   maxlength="64"
+                   placeholder="Name"/>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-form-field class="full-width">
+            <textarea matInput
+                      formControlName="notes"
+                      placeholder="Notes"></textarea>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of statusChoices"
+                          [value]="status">
+                {{ status }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-checkbox formControlName="active">
+            Active
+          </mat-checkbox>
+        </p>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button
+          mat-dialog-close>
+    Cancel
+  </button>
+  <button mat-button
+          (click)="handleSubmit()">
+    Save
+  </button>
+</mat-dialog-actions>

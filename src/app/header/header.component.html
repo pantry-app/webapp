@@ -3,12 +3,14 @@
              color="primary">
 
   <button mat-icon-button
+          class="sidenav-open"
           (click)="toggleSidenav.emit()">
     <mat-icon>menu</mat-icon>
   </button>
 
   <div fxLayout="row">
-    <span style="margin-right: 0.5rem;">
+    <span style="margin-right: 0.5rem;"
+          class="app-name">
       Pantry
     </span>
     <mat-chip-list>
@@ -22,7 +24,7 @@
     <mat-icon>home</mat-icon>
   </a>
 
-  <a *ngIf="!(user$ | async)"
+  <a *ngIf="(user$ | async) === null"
      mat-icon-button
      routerLink="/">
     <mat-icon>home</mat-icon>

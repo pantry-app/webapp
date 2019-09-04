@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { IUser } from '../models';
 import { ToastrService } from 'ngx-toastr';
 
 interface IAuthResponse {
-  jwt: string;
+  auth_token: string;
 }
 
 @Injectable({
@@ -28,11 +28,11 @@ export class AuthService {
 
   login({password, email}: { password: string, email: string }): Observable<null> {
     return this.http
-      .post<IAuthResponse>(`${environment.api}/user/login`, {password, email})
+      .post<IAuthResponse>(`${environment.api}/auth/token/login/`, {password, email})
       .pipe(
         tap(
           next => {
-            if (next && next.jwt) {
+            if (next && next.auth_token) {
               localStorage.setItem('currentUser', JSON.stringify(next));
               this.currentUserSubject.next(next);
 
@@ -48,108 +48,31 @@ export class AuthService {
 
   register({password, email}: { password: string, email: string }): Observable<null> {
     return this.http
-      .post<IAuthResponse>(`${environment.api}/user/register`, {password, email})
+      .post<IAuthResponse>(`${environment.api}/auth/users/`, {password, email})
       .pipe(
         tap(
           next => {
-              this.toastr.info('Registration successful. Please confirm your email address.');
+              this.toastr.info('Registration successful.');
           }
         ),
         map(
           () => null
-        )
-      );
-  }
-
-  changePassword({old, pass}: {old: string, pass: string}): Observable<null> {
-    return this.http
-      .put<{}>(`${environment.api}/user/password`, {old, new: pass})
-      .pipe(
-        tap(
-          () => {
-            this.toastr.success('Password successfully changed');
-          }
-        ),
-        map(
-          () => null
-        )
-      );
-  }
-
-  forgot(email: string): Observable<null> {
-    return this.http
-      .post<{}>(`${environment.api}/user/password/forgot`, {email})
-      .pipe(
-        tap(
-          () => this.toastr.success('Password reset email sent')
-        ),
-        map(
-          () => null
-        )
-      );
-  }
-
-  reset({password, token}: {password: string, token: string}): Observable<null> {
-    return this.http
-      .post<IAuthResponse>(`${environment.api}/user/password/reset`, {password, token})
-      .pipe(
-        tap(
-          next => {
-            if (next && next.jwt) {
-              localStorage.setItem('currentUser', JSON.stringify(next));
-              this.currentUserSubject.next(next);
-
-              this.toastr.success('Password changed successfully');
-            }
-          }
-        ),
-        map(
-          () => null
-        )
-      );
-  }
-
-  verifyAccount(token: string): Observable<IAuthResponse> {
-    return this.http
-      .post<IAuthResponse>(`${environment.api}/user/verify`, {token})
-      .pipe(
-        tap(
-          next => {
-            if (next && next.jwt) {
-              localStorage.setItem('currentUser', JSON.stringify(next));
-              this.currentUserSubject.next(next);
-
-              this.toastr.success('Account verified.');
-            }
-          }
-        ),
-        map(
-          () => null
-        )
-      );
-  }
-
-  refresh(): Observable<IAuthResponse> {
-    return this.http
-      .get<IAuthResponse>(
-        `${environment.api}/user/refresh`,
-        { headers: { Authorization: `Bearer ${this.currentUserValue.jwt}` } }
-        )
-      .pipe(
-        tap(
-          next => {
-            if (next && next.jwt) {
-              localStorage.setItem('currentUser', JSON.stringify(next));
-              this.currentUserSubject.next(next);
-            }
-          }
         )
       );
   }
 
   deleteAccount({password}: {password: string}): Observable<null> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        password
+      }
+    };
+
     return this.http
-      .post<{}>(`${environment.api}/user/delete`, {password})
+      .delete<{}>(`${environment.api}/users/me/`, options)
       .pipe(
         tap(
           () => {
@@ -164,14 +87,20 @@ export class AuthService {
       );
   }
 
-  downloadArchive(): Observable<any> {
+  logout(): Observable<null> {
     return this.http
-      .get<any>(`${environment.api}/user/export`, {responseType: 'blob' as 'json'});
-  }
-
-  logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.toastr.info('You have been logged out');
+      .post(`${environment.api}/auth/token/logout/`, '')
+      .pipe(
+        tap(
+          () => {
+            localStorage.removeItem('currentUser');
+            this.currentUserSubject.next(null);
+            this.toastr.info('You have been logged out');
+          }
+        ),
+        map(
+          () => null
+        )
+      );
   }
 }

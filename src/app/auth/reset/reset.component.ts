@@ -26,10 +26,10 @@ export class ResetComponent implements OnInit {
   }
 
   public submit(): void {
-    this.authService
-      .reset(this.form.value)
-      .subscribe(
-        () => this.router.navigate(['dashboard'])
-      );
+    // this.authService
+    //   .reset(this.form.value)
+    //   .subscribe(
+    //     () => this.router.navigate(['dashboard'])
+    //   );
   }
 }

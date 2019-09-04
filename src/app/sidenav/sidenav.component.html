@@ -6,11 +6,15 @@
 
 <mat-nav-list>
 
-  <h2 matSubheader>Actions</h2>
+  <h2 matSubheader class="sidenav-title">
+    Actions
+  </h2>
 
   <a mat-list-item routerLink="/" style="height: 0;"></a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="!isLoggedIn"
      routerLink="/"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>home</mat-icon>
@@ -20,6 +24,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="!isLoggedIn"
      [routerLink]="['auth', 'login']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>person</mat-icon>
@@ -29,6 +35,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="!isLoggedIn"
      [routerLink]="['auth', 'register']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>person_add</mat-icon>
@@ -38,6 +46,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="isLoggedIn"
      [routerLink]="['dashboard']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>reply</mat-icon>
@@ -47,6 +57,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="isLoggedIn"
      [routerLink]="['dashboard', 'shoppinglist']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>play_circle_filled</mat-icon>
@@ -56,6 +68,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="isLoggedIn"
      [routerLink]="['dashboard', 'stats']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>history</mat-icon>
@@ -65,6 +79,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="isLoggedIn"
      [routerLink]="['dashboard', 'history']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>history</mat-icon>
@@ -74,6 +90,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="isLoggedIn"
      [routerLink]="['dashboard', 'settings']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>settings</mat-icon>
@@ -83,6 +101,8 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
+     *ngIf="isLoggedIn"
      routerLink="/"
      (click)="logout()">
     <mat-icon matListIcon>reply</mat-icon>
@@ -94,6 +114,7 @@
   <mat-divider></mat-divider>
 
   <a mat-list-item
+     class="sidenav-link"
      [routerLink]="['/', 'about']"
      (click)="toggleSidenav.emit()">
     <mat-icon matListIcon>info</mat-icon>
@@ -103,6 +124,7 @@
   </a>
 
   <a mat-list-item
+     class="sidenav-link"
      target="_blank"
      href="https://github.com/pantry"
      (click)="toggleSidenav.emit()">

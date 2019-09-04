@@ -1,89 +1,64 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { IngredientStatusEnum, Recipe } from '../../models';
-
-const RECIPES: Recipe[] = [
-  {
-    id: 'id',
-    name: 'Chickpea Curry',
-    ingredients: [
-      {
-        id: 'id3',
-        name: 'Chickpeas',
-        notes: '16oz can',
-        status: IngredientStatusEnum.FULL,
-        active: true,
-      }
-    ],
-    active: true,
-    url: '',
-    notes: ''
-  },
-  {
-    id: 'id2',
-    name: 'Chili',
-    ingredients: [
-      {
-        id: 'id3',
-        name: 'Corn',
-        notes: '12oz can',
-        status: IngredientStatusEnum.FULL,
-        active: true,
-      },
-      {
-        id: 'id3',
-        name: 'Tomato Sauce',
-        notes: '8oz can',
-        status: IngredientStatusEnum.FULL,
-        active: true,
-      },
-      {
-        id: 'id3',
-        name: 'Diced Tomatoes',
-        notes: '12oz can',
-        status: IngredientStatusEnum.FULL,
-        active: true,
-      }
-    ],
-    active: true,
-    url: '',
-    notes: ''
-  },
-];
+import { Recipe } from '../../models';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
 
+  private subject = new BehaviorSubject<Recipe[]>([]);
+
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Recipe[]> {
-    return of(RECIPES);
-    // return this.http
-    //   .get<Recipe[]>(`${environment.api}/checkin/user/`);
+    this.http.get<Recipe[]>(`${environment.api}/recipes/`)
+      .subscribe(
+      next => this.subject.next(next)
+    );
+
+    return this.subject.asObservable();
   }
 
-  get(id: string): Observable<Recipe> {
+  create(recipe: Partial<Recipe>): Observable<boolean> {
     return this.http
-      .get<Recipe>(`${environment.api}/checkin/${id}`);
+      .post(`${environment.api}/recipes/`, recipe)
+      .pipe(
+        tap(
+          () => this.getAll()
+        ),
+        map(
+          () => true
+        )
+      );
   }
 
-  create(): Observable<void> {
-    const data = {
-    };
-
+  update(recipe: Recipe): Observable<boolean> {
     return this.http
-      .post<void>(`${environment.api}/checkin`, data);
+      .patch(`${environment.api}/recipes/${recipe.id}/`, recipe)
+      .pipe(
+        tap(
+          () => this.getAll()
+        ),
+        map(
+          () => true
+        )
+      );
   }
 
-  update(): Observable<void> {
-    const data = {
-    };
-
+  delete(recipe: Recipe): Observable<boolean> {
     return this.http
-      .put<void>(`${environment.api}/checkin/${42}`, data);
+      .delete(`${environment.api}/recipes/${recipe.id}/`)
+      .pipe(
+        tap(
+          () => this.getAll()
+        ),
+        map(
+          () => true
+        )
+      );
   }
 }
