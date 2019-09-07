@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  api: 'http://localhost:19350',
+  api: 'https://pantry-api.tmk.name',
   VERSION: '0.1'
 };
