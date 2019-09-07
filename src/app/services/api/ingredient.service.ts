@@ -14,8 +14,9 @@ export class IngredientService {
   constructor(private http: HttpClient,
               private recipeService: RecipeService) { }
 
-  search(): Observable<Ingredient[]> {
-    return of([]);
+  search(name: string): Observable<Ingredient[]> {
+    return this.http
+      .get<Ingredient[]>(`${environment.api}/ingredients/?name=${name}`);
   }
 
   create(ingredient: Partial<Ingredient>, recipe: Recipe): Observable<boolean> {
