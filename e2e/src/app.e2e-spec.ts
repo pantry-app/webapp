@@ -135,7 +135,10 @@ describe('Ingredients', () => {
     await AppRecipePage.create.form.values(recipeName);
     await AppRecipePage.create.form.submit();
 
-    // Create an ingredient
+    /*
+     * Add the Ingredient via the Create Form
+     */
+
     const ingredientName = 'Kidney beans';
 
     // Open the Add Ingredient dialog
@@ -179,6 +182,26 @@ describe('Ingredients', () => {
     ingredients = await AppRecipePage.ingredients.getForRecipe(recipeName);
 
     await expect(ingredients.length).toEqual(0);
+
+    /*
+     * Add the Ingredient via the Existing Form
+     */
+
+    // Open the Add Ingredient dialog
+    await AppRecipePage.ingredients.add(recipeName);
+
+    // Already on the Existing tab
+
+    // Select the ingredient
+    await AppRecipePage.ingredients.create.existing.form.values(updatedIngredientName);
+
+    await AppRecipePage.ingredients.create.form.submit();
+
+    // Confirm ingredient added to recipe
+    ingredients = await AppRecipePage.ingredients.getForRecipe(recipeName);
+
+    await expect(ingredients.length).toEqual(1);
+    await expect(ingredients[0].name).toEqual(updatedIngredientName);
 
     // Delete the recipe to cleanup
     await AppRecipePage.remove(recipeName);

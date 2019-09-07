@@ -1,4 +1,4 @@
-import { browser, by, element, ExpectedConditions } from 'protractor';
+import { browser, by, element, ExpectedConditions, Key } from 'protractor';
 
 const DEFAULT_SLEEP_TIMEOUT = 100;
 
@@ -134,6 +134,24 @@ export class AppRecipePage {
             by.cssContainingText('app-create-ingredient button', 'Save')
           )
             .click();
+        }
+      },
+      existing: {
+        form: {
+          async values(name: string) {
+            await element(by.css('app-create-ingredient input[placeholder="ingredient" i]'))
+              .sendKeys(name);
+            await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT * 3);
+
+            // Select from the drop-down via "down" key and "enter" key
+            await element(by.css('app-create-ingredient input[placeholder="ingredient" i]'))
+              .sendKeys(Key.ARROW_DOWN);
+            await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+
+            await element(by.css('app-create-ingredient input[placeholder="ingredient" i]'))
+              .sendKeys(Key.ENTER);
+            await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+          }
         }
       }
     },
