@@ -14,13 +14,19 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <mat-form-field>
-          <input matInput placeholder="Recipe name">
-        </mat-form-field>
+        <form [formGroup]="searchForm">
+          <mat-form-field>
+            <input matInput
+                   placeholder="Recipe name"
+                   formControlName="name">
+          </mat-form-field>
 
-        <p>
-          <mat-checkbox>Active</mat-checkbox>
-        </p>
+          <p>
+            <mat-checkbox formControlName="active">
+              Active
+            </mat-checkbox>
+          </p>
+        </form>
       </mat-expansion-panel>
     </mat-accordion>
   </div>

@@ -3,6 +3,8 @@ import { browser, logging } from 'protractor';
 
 describe('App Header', () => {
   beforeEach(async () => {
+    await AppShortcuts.reset();
+
     await AppHome.navigateTo();
   });
 
@@ -30,7 +32,7 @@ describe('Authentication', () => {
   // Register, Login, Logout
 
   beforeEach(async () => {
-
+    await AppShortcuts.reset();
   });
 
   it('should register an account, then logout, then login', async () => {
@@ -71,7 +73,7 @@ describe('Recipes', () => {
   // Add, edit, delete recipe
 
   beforeEach(async () => {
-
+    await AppShortcuts.reset();
   });
 
   it('should create, then edit, then delete a recipe', async () => {
@@ -114,13 +116,56 @@ describe('Recipes', () => {
     // Confirm delete
     expect(AppRecipePage.recipes.get(updatedName).isPresent()).toBeFalsy();
   });
+
+  it('should search for recipes based on name and active status', async () => {
+    // Login to the app
+
+    // Login to the app
+    await AppShortcuts.login();
+
+    // Create a couple recipes
+    await AppShortcuts.recipes.create('Chili', true);
+    await AppShortcuts.recipes.create('Tiki Masala', true);
+    await AppShortcuts.recipes.create('Chickpea Curry', false);
+    await AppShortcuts.recipes.create('Lentil Curry', false);
+
+    // By Default, search should be by active = true
+    let recipes: any[] = await AppRecipePage.recipes.all();
+
+    await expect(recipes.length).toEqual(2);
+
+    // Alphabetical
+    await expect(recipes[0].name).toEqual('Chili');
+    await expect(recipes[1].name).toEqual('Tiki Masala');
+
+    // Search for recipe by name
+    await AppRecipePage.search.open();
+    await AppRecipePage.search.form.name('Chili');
+
+    recipes = await AppRecipePage.recipes.all();
+
+    await expect(recipes.length).toEqual(1);
+    await expect(recipes[0].name).toEqual('Chili');
+
+    // Search for recipe by active = false
+    await AppRecipePage.search.form.name('');
+    await AppRecipePage.search.form.active();
+
+    recipes = await AppRecipePage.recipes.all();
+
+    await expect(recipes.length).toEqual(2);
+
+    // Alphabetical
+    await expect(recipes[0].name).toEqual('Chickpea Curry');
+    await expect(recipes[1].name).toEqual('Lentil Curry');
+  });
 });
 
 describe('Ingredients', () => {
   // Add, edit, delete ingredient
 
   beforeEach(async () => {
-
+    await AppShortcuts.reset();
   });
 
   it('should create, then edit, then delete an ingredient', async () => {
@@ -202,12 +247,6 @@ describe('Ingredients', () => {
 
     await expect(ingredients.length).toEqual(1);
     await expect(ingredients[0].name).toEqual(updatedIngredientName);
-
-    // Delete the recipe to cleanup
-    await AppRecipePage.remove(recipeName);
-
-    // Wait for delete to occur
-    await AppShortcuts.sleep(3000);
   });
 });
 

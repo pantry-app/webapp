@@ -1,5 +1,7 @@
 import { browser, by, element, ExpectedConditions, Key } from 'protractor';
+import { HttpClient } from 'protractor-http-client';
 
+const API_URL = 'http://localhost:8000';
 const DEFAULT_SLEEP_TIMEOUT = 100;
 
 export class AppState {
@@ -31,6 +33,15 @@ export class AppLogin {
 }
 
 export class AppShortcuts {
+  static recipes = {
+    async create(name: string, active: boolean) {
+      await AppRecipePage.create.open();
+
+      await AppRecipePage.create.form.values(name, '', '', active);
+      await AppRecipePage.create.form.submit();
+    }
+  };
+
   static async login() {
     await AppLogin.navigateTo();
     await AppLogin.form.values(TEST_CREDENTIALS.email, TEST_CREDENTIALS.password);
@@ -43,6 +54,13 @@ export class AppShortcuts {
 
   static async sleep(timeout: number) {
     await browser.sleep(timeout);
+  }
+
+  static async reset() {
+    const client = new HttpClient(API_URL);
+    await client.get('/e2e/reset/');
+
+    await browser.restart();
   }
 }
 
@@ -191,12 +209,20 @@ export class AppRecipePage {
 
   static create = {
     form: {
-      async values(name: string, url: string = '', notes: string = '') {
+      async values(name: string, url: string = '', notes: string = '', active: boolean = true) {
         await element(by.css('app-create-recipe input[placeholder="name" i]')).sendKeys(name);
         await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+
         await element(by.css('app-create-recipe input[placeholder="url" i]')).sendKeys(url);
         await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+
         await element(by.css('app-create-recipe textarea[placeholder="notes" i]')).sendKeys(notes);
+        await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+
+        if (!active) {
+          await element(by.cssContainingText('app-create-recipe label', 'Active'))
+            .click();
+        }
       },
       submit() {
         return element(
@@ -249,6 +275,41 @@ export class AppRecipePage {
   static recipes = {
     get(name: string) {
       return element(by.cssContainingText('app-root app-recipe', name));
+    },
+    async all() {
+      const recipes = await element.all(by.css('app-root app-recipe .recipe-name'))
+        .map(
+          async ef => ({
+            name: ef.getText()
+          })
+        );
+
+      return recipes;
+    }
+  };
+
+  static search = {
+    form: {
+      async name(name: string) {
+        await element(by.css('app-root app-main .search-panel input[placeholder="Recipe name" i]'))
+          .sendKeys(Key.chord(Key.CONTROL, 'a'));
+        await element(by.css('app-root app-main .search-panel input[placeholder="Recipe name" i]'))
+          .sendKeys(Key.BACK_SPACE);
+        await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+
+        await element(by.css('app-root app-main .search-panel input[placeholder="Recipe name" i]'))
+          .sendKeys(name);
+        await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+      },
+      async active() {
+        await element(by.cssContainingText('app-root app-main .search-panel label', 'Active'))
+          .click();
+        await AppShortcuts.sleep(DEFAULT_SLEEP_TIMEOUT);
+      }
+    },
+    async open() {
+      await element(by.cssContainingText('app-root app-main .search-panel mat-expansion-panel', 'Search'))
+        .click();
     }
   };
 
